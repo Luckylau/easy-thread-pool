@@ -1,7 +1,7 @@
 package tech.luckylau.concurrent.core.thread;
 
 /**
- * @author liujun
+ * @author luckylau
  * @date 2017/12/29/029 17:36
  */
 public class ThreadPoolStatus {
