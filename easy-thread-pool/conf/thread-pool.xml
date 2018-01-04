@@ -12,6 +12,7 @@
         <corePoolSize>10</corePoolSize>
         <maxPoolSize>100</maxPoolSize>
         <keepAliveTime>15</keepAliveTime>
+        <queuePriority>true</queuePriority>
         <workQueueSize>100000</workQueueSize>
     </pool>
 

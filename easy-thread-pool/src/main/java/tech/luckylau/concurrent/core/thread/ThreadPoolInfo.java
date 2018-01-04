@@ -1,4 +1,4 @@
-package tech.luckylau.concurrent.core.config;
+package tech.luckylau.concurrent.core.thread;
 
 /**
  * @author luckylau
@@ -13,6 +13,11 @@ public class ThreadPoolInfo {
 
     private long threadKeepAliveTime;
 
+    private boolean  queuePriority = false;
+
+    /**
+     * queueSize -1 为 SynchronousQueue
+     */
     private int queueSize ;
 
     public String getName() {
@@ -53,5 +58,13 @@ public class ThreadPoolInfo {
 
     public void setQueueSize(int queueSize) {
         this.queueSize = queueSize;
+    }
+
+    public boolean isQueuePriority() {
+        return queuePriority;
+    }
+
+    public void setQueuePriority(boolean queuePriority) {
+        this.queuePriority = queuePriority;
     }
 }

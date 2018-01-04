@@ -1,10 +1,6 @@
-package tech.luckylau.concurrent.core.config;
+package tech.luckylau.concurrent.core.thread;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
  * 处理xml文件
@@ -13,7 +9,7 @@ import java.util.Map;
  */
 public class ThreadPoolConfig {
 
-    private Map<String, ThreadPoolInfo> threadPoolInfo;
+    private List<ThreadPoolInfo> threadPoolInfo;
 
     /**是否开启线程池状态收集
      * 时间间隔单位为秒
@@ -65,11 +61,11 @@ public class ThreadPoolConfig {
         this.threadStackInterval = threadStackInterval;
     }
 
-    public Map<String, ThreadPoolInfo> getThreadPoolInfo() {
+    public List<ThreadPoolInfo> getThreadPoolInfo() {
         return threadPoolInfo;
     }
 
-    public void setThreadPoolInfo(Map<String, ThreadPoolInfo> threadPoolInfo) {
+    public void setThreadPoolInfo(List<ThreadPoolInfo> threadPoolInfo) {
         this.threadPoolInfo = threadPoolInfo;
     }
 

@@ -5,16 +5,15 @@ import org.springframework.beans.factory.InitializingBean;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import tech.luckylau.concurrent.core.config.ThreadPoolConfig;
-import tech.luckylau.concurrent.core.config.ThreadPoolInfo;
+import tech.luckylau.concurrent.core.thread.ThreadPoolConfig;
+import tech.luckylau.concurrent.core.thread.ThreadPoolInfo;
 import tech.luckylau.concurrent.core.utils.DomUtil;
 import tech.luckylau.concurrent.core.utils.NodeParser;
 import tech.luckylau.concurrent.service.EasyThreadPool;
 import tech.luckylau.concurrent.service.EasyThreadPoolImpl;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.springframework.util.Assert.state;
 
@@ -26,7 +25,7 @@ public class EasyThreadPoolBeanFactory implements FactoryBean, InitializingBean 
 
     private ThreadPoolConfig threadPoolConfig;
 
-    private Map<String, ThreadPoolInfo> threadPoolInfoMap = new HashMap<String, ThreadPoolInfo>();
+    private List<ThreadPoolInfo> threadPoolInfos = new ArrayList<>();
 
     /**
      * 配置文件的位置
@@ -60,7 +59,8 @@ public class EasyThreadPoolBeanFactory implements FactoryBean, InitializingBean 
                 threadPoolInfo.setMaxSize(Integer.parseInt(nodeParser.getChildNodeValue("maxPoolSize")));
                 threadPoolInfo.setThreadKeepAliveTime(Long.parseLong(nodeParser.getChildNodeValue("keepAliveTime")));
                 threadPoolInfo.setQueueSize(Integer.parseInt(nodeParser.getChildNodeValue("workQueueSize")));
-                threadPoolInfoMap.put(threadPoolInfo.getName(), threadPoolInfo);
+                threadPoolInfo.setQueuePriority(Boolean.parseBoolean(nodeParser.getChildNodeValue("queuePriority")));
+                threadPoolInfos.add(threadPoolInfo);
             }else if ( "threadstate".equals(node.getNodeName()) ) {
                 threadPoolConfig.setThreadStateSwitch("on".equalsIgnoreCase(nodeParser.getAttributeValue("switch")));
                 threadPoolConfig.setThreadStateInterval(Integer.parseInt(nodeParser.getAttributeValue("interval")));
@@ -72,7 +72,7 @@ public class EasyThreadPoolBeanFactory implements FactoryBean, InitializingBean 
                 threadPoolConfig.setThreadStackInterval(Integer.parseInt(nodeParser.getAttributeValue("interval")));
             }
         }
-        threadPoolConfig.setThreadPoolInfo(threadPoolInfoMap);
+        threadPoolConfig.setThreadPoolInfo(threadPoolInfos);
 
         EasyThreadPool easyThreadPool = new EasyThreadPoolImpl(threadPoolConfig);
         easyThreadPool.init();
