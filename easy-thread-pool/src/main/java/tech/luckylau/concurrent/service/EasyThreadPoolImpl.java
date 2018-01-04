@@ -8,10 +8,7 @@ import tech.luckylau.concurrent.core.thread.ThreadPoolInfo;
 import tech.luckylau.concurrent.core.thread.ThreadPoolStatus;
 import tech.luckylau.concurrent.core.handler.Failhandler;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -79,7 +76,12 @@ public class EasyThreadPoolImpl implements EasyThreadPool {
                 multiThreadPool.put(threadPoolInfo.getName(), threadPool);
                 logger.info("initialization thread pool '{}' sucess", threadPoolInfo.getName());
             }else{
-                BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<Runnable>(threadPoolInfo.getQueueSize());
+                BlockingQueue<Runnable> workQueue;
+                if(threadPoolInfo.isQueuePriority()){
+                    workQueue = new PriorityBlockingQueue<Runnable>(threadPoolInfo.getQueueSize());
+                }else {
+                    workQueue = new ArrayBlockingQueue<Runnable>(threadPoolInfo.getQueueSize());
+                }
                 ThreadPoolExecutor threadPool = new ThreadPoolExecutor(threadPoolInfo.getCoreSize(), threadPoolInfo.getMaxSize(), threadPoolInfo.getThreadKeepAliveTime(), TimeUnit.SECONDS, workQueue, new ThreadPoolFactory(threadPoolInfo.getName()));
                 multiThreadPool.put(threadPoolInfo.getName(), threadPool);
                 logger.info("initialization thread pool '{}' sucess", threadPoolInfo.getName());
