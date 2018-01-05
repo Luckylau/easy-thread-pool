@@ -2,6 +2,9 @@ package tech.luckylau.concurrent.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tech.luckylau.concurrent.core.job.ThreadPoolStateJob;
+import tech.luckylau.concurrent.core.job.ThreadStackJob;
+import tech.luckylau.concurrent.core.job.ThreadStateJob;
 import tech.luckylau.concurrent.core.thread.ThreadPoolConfig;
 import tech.luckylau.concurrent.core.thread.ThreadPoolFactory;
 import tech.luckylau.concurrent.core.thread.ThreadPoolInfo;
@@ -32,6 +35,12 @@ public class EasyThreadPoolImpl implements EasyThreadPool {
 
     private Map<String, ExecutorService> multiThreadPool = new HashMap<>();
 
+    private ThreadStackJob threadStackJob;
+
+    private ThreadPoolStateJob threadPoolStateJob;
+
+    private ThreadStateJob threadStateJob;
+
     public EasyThreadPoolImpl(ThreadPoolConfig threadPoolConfig) {
         this.threadPoolConfig = threadPoolConfig;
     }
@@ -46,6 +55,9 @@ public class EasyThreadPoolImpl implements EasyThreadPool {
 
         try {
             initThreadPool();
+            startThreadPoolStateJob();
+            startThreadStackJob();
+            startThreadStateJob();
             status = ThreadPoolStatus.INITIALIYION_SUCESSFUL;
         } catch (Exception e) {
             status = ThreadPoolStatus.INITIALIYION_FAILED;
@@ -90,6 +102,50 @@ public class EasyThreadPoolImpl implements EasyThreadPool {
 
     }
 
+    private void startThreadPoolStateJob(){
+        if(!threadPoolConfig.isThreadPoolStateSwitch()){
+            return;
+        }
+
+        threadPoolStateJob = new ThreadPoolStateJob(multiThreadPool, threadPoolConfig.getThreadPoolStateInterval());
+        threadPoolStateJob.init();
+        Thread jobThread = new Thread(threadPoolStateJob);
+        jobThread.setName("easy-thread-pool-threadpoolstate");
+        jobThread.start();
+
+        logger.info("start job 'easy-thread-pool-threadpoolstate' success");
+
+    }
+
+    private void startThreadStackJob(){
+        if(!threadPoolConfig.isThreadStackSwitch()){
+            return;
+        }
+
+        threadStackJob = new ThreadStackJob(threadPoolConfig.getThreadStackInterval());
+        threadStackJob.init();
+        Thread jobThread = new Thread(threadStackJob);
+        jobThread.setName("easy-thread-pool-threadstack");
+        jobThread.start();
+
+        logger.info("start job 'easy-thread-pool-threadstack' success");
+
+    }
+
+    private void startThreadStateJob(){
+        if(!threadPoolConfig.isThreadStateSwitch()){
+            return;
+        }
+
+        threadStateJob = new ThreadStateJob(threadPoolConfig.getThreadStateInterval());
+        threadStateJob.init();
+        Thread jobThread = new Thread(threadStateJob);
+        jobThread.setName("easy-thread-pool-threadstate");
+        jobThread.start();
+
+        logger.info("start job 'easy-thread-pool-threadstate' success");
+
+    }
 
     @Override
     public void close(){
@@ -105,10 +161,6 @@ public class EasyThreadPoolImpl implements EasyThreadPool {
         }catch (InterruptedException e){
             logger.error("shut down threadPool error", e.getMessage());
         }
-
-
-
-
     }
 
     @Override
