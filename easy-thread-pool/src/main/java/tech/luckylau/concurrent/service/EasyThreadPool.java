@@ -68,6 +68,14 @@ public interface EasyThreadPool {
     public <T> Future<T> submit(Callable<T> task, String threadPoolName, Failhandler<Callable<T>> failHandler);
 
     /**
+     * 在线程池"default"执行多个需要返回值的异步任务
+     * @param tasks
+     * @param <T>
+     * @return
+     */
+    public <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks);
+
+    /**
      * 在线程池"default"执行多个需要返回值的异步任务，并设置超时时间。
      * @param tasks
      * @param timeout
@@ -76,6 +84,15 @@ public interface EasyThreadPool {
      * @return
      */
     public <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks, long timeout, TimeUnit timeoutUnit);
+
+    /**
+     * 在指定的线程池执行多个需要返回值的异步任务
+     * @param tasks
+     * @param threadpoolName
+     * @param <T>
+     * @return
+     */
+    public <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks,String threadpoolName);
 
     /**
      * 在指定的线程池执行多个需要返回值的异步任务，并设置超时时间。

@@ -2,6 +2,7 @@ package tech.luckylau.concurrent.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 import tech.luckylau.concurrent.core.job.ThreadPoolStateJob;
 import tech.luckylau.concurrent.core.job.ThreadStackJob;
 import tech.luckylau.concurrent.core.job.ThreadStateJob;
@@ -10,6 +11,7 @@ import tech.luckylau.concurrent.core.thread.ThreadPoolFactory;
 import tech.luckylau.concurrent.core.thread.ThreadPoolInfo;
 import tech.luckylau.concurrent.core.thread.ThreadPoolStatus;
 import tech.luckylau.concurrent.core.handler.Failhandler;
+import tech.luckylau.concurrent.exception.EasyThreadExpection;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -163,43 +165,116 @@ public class EasyThreadPoolImpl implements EasyThreadPool {
         }
     }
 
+    private ExecutorService getExistsThreadPool(String threadpoolName){
+        if(StringUtils.isEmpty(threadpoolName)){
+            throw new EasyThreadExpection("threadPool name is empty");
+        }
+        ExecutorService threadPool = multiThreadPool.get(threadpoolName);
+        return threadPool;
+    }
+
+
     @Override
     public Future<?> submit(Runnable task) {
-        return null;
+        return submit(task, DEFAULT_THREAD_POOL);
     }
 
     @Override
     public Future<?> submit(Runnable task, String threadPoolName) {
-        return null;
+        if(task == null){
+            throw new EasyThreadExpection("task is null");
+        }
+        ExecutorService threadPool =getExistsThreadPool(threadPoolName);
+        logger.debug("submit a task to thread pool {}", threadPoolName);
+
+        return threadPool.submit(task);
     }
 
     @Override
     public Future<?> submit(Runnable task, String threadPoolName, Failhandler<Runnable> failHandler) {
+
+        try {
+            return submit(task, threadPoolName);
+        } catch (RejectedExecutionException e) {
+            if(null != failHandler){
+                failHandler.execute(task);
+            }
+        }
         return null;
     }
 
     @Override
     public <T> Future<T> submit(Callable<T> task) {
-        return null;
+        return submit(task, DEFAULT_THREAD_POOL);
     }
 
     @Override
     public <T> Future<T> submit(Callable<T> task, String threadPoolName) {
-        return null;
+        if(task == null){
+            throw new EasyThreadExpection("task is null");
+        }
+        ExecutorService threadPool =getExistsThreadPool(threadPoolName);
+        logger.debug("submit a task to thread pool {}", threadPoolName);
+
+        return threadPool.submit(task);
     }
 
     @Override
     public <T> Future<T> submit(Callable<T> task, String threadPoolName, Failhandler<Callable<T>> failHandler) {
+        try {
+            return submit(task, threadPoolName);
+        } catch (RejectedExecutionException e) {
+            if(null != failHandler){
+                failHandler.execute(task);
+            }
+        }
         return null;
     }
 
     @Override
+    public <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks) {
+        return invokeAll(tasks, DEFAULT_THREAD_POOL);
+    }
+
+    @Override
     public <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks, long timeout, TimeUnit timeoutUnit) {
+
+        return invokeAll(tasks, timeout, timeoutUnit, DEFAULT_THREAD_POOL);
+    }
+
+    @Override
+    public <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks, String threadpoolName) {
+        if(tasks == null || tasks.isEmpty()){
+            throw new EasyThreadExpection("task list is null or empty");
+        }
+
+        ExecutorService threadPool = getExistsThreadPool(threadpoolName);
+
+        try {
+            return threadPool.invokeAll(tasks);
+        } catch (InterruptedException e) {
+            logger.error("invoke task list occurs error", e);
+        }
         return null;
     }
 
     @Override
     public <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks, long timeout, TimeUnit timeoutUnit, String threadpoolName) {
+        if(tasks == null || tasks.isEmpty()){
+            throw new EasyThreadExpection("task list is null or empty");
+        }
+        if(timeout <= 0){
+            throw new EasyThreadExpection("timeout less than or equals zero");
+        }
+
+        ExecutorService threadPool = getExistsThreadPool(threadpoolName);
+
+        try {
+            return threadPool.invokeAll(tasks, timeout, timeoutUnit);
+        } catch (InterruptedException e) {
+            logger.error("invoke task list occurs error", e);
+        }
+
         return null;
     }
 }
