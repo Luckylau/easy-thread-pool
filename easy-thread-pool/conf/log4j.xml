@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="systemLog" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="/easy-pool/systemLog.log" />
+        <param name="Append" value="true" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="threadStateLog" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="/easy-pool/threadState.log" />
+        <param name="Append" value="true" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="myConsole" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd HH:mm:ss,SSS\} %-5p] [%t] %c{2\} - %m%n" />
+        </layout>
+        <!--过滤器设置输出的级别-->
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="debug" />
+            <param name="levelMax" value="error" />
+            <param name="AcceptOnMatch" value="true" />
+        </filter>
+    </appender>
+
+    <logger name="tech.luckylau.concurrent.service.EasyThreadPoolImpl" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="threadStateLog" />
+    </logger>
+
+    <logger name="tech.luckylau.concurrent.core.job" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="threadStateLog" />
+    </logger>
+
+    <root>
+        <priority value="INFO" />
+        <appender-ref ref="systemLog" />
+        <appender-ref ref="myConsole"/>
+    </root>
+</log4j:configuration>
