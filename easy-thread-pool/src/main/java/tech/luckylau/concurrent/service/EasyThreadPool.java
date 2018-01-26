@@ -33,6 +33,15 @@ public interface EasyThreadPool {
     public Future<?> submit(Runnable task, String threadPoolName);
 
     /**
+     * 提交一个不需要返回值的异步任务给默认线程池执行,并指定无法提交时的处理方式。
+     * @param task
+     * @param failHandler
+     * @return
+     */
+    public Future<?> submit(Runnable task, Failhandler<Runnable> failHandler);
+
+
+    /**
      * 提交一个不需要返回值的异步任务给指定的线程池执行,并指定无法提交时的处理方式。
      * @param task
      * @param threadPoolName
@@ -57,6 +66,15 @@ public interface EasyThreadPool {
      * @return
      */
     public <T> Future<T> submit(Callable<T> task, String threadPoolName);
+
+
+    /**
+     * 提交一个需要返回值的异步任务给默认线程池执行,并指定无法提交时的处理方式。
+     * @param task
+     * @param failHandler
+     * @return
+     */
+    public <T> Future<T> submit(Callable<T> task, Failhandler<Callable<T>> failHandler);
 
     /**
      * 提交一个需要返回值的异步任务给指定的线程池执行,并指定无法提交时的处理方式。

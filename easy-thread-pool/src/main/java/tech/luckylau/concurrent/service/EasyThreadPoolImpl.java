@@ -191,6 +191,11 @@ public class EasyThreadPoolImpl implements EasyThreadPool {
     }
 
     @Override
+    public Future<?> submit(Runnable task, Failhandler<Runnable> failHandler) {
+        return submit(task, DEFAULT_THREAD_POOL, failHandler);
+    }
+
+    @Override
     public Future<?> submit(Runnable task, String threadPoolName, Failhandler<Runnable> failHandler) {
 
         try {
@@ -217,6 +222,11 @@ public class EasyThreadPoolImpl implements EasyThreadPool {
         logger.debug("submit a task to thread pool {}", threadPoolName);
 
         return threadPool.submit(task);
+    }
+
+    @Override
+    public <T> Future<T> submit(Callable<T> task, Failhandler<Callable<T>> failHandler) {
+        return submit(task, DEFAULT_THREAD_POOL, failHandler);
     }
 
     @Override
