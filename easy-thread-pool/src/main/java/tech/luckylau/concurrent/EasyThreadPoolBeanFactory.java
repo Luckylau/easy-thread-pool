@@ -39,8 +39,13 @@ public class EasyThreadPoolBeanFactory implements FactoryBean, InitializingBean 
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        state((configLocation == null), " 'configLocation' can not be null");
-        easyThreadPool = buildEasyThreadPool();
+        state((configLocation != null), " 'configLocation' can not be null");
+        if(configLocation != null){
+            configLocation = "/" + configLocation;
+            threadPoolConfig = new ThreadPoolConfig();
+            easyThreadPool = buildEasyThreadPool();
+        }
+
 
     }
 
