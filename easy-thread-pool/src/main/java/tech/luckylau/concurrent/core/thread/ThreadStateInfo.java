@@ -1,7 +1,5 @@
 package tech.luckylau.concurrent.core.thread;
 
-import java.io.Serializable;
-
 /**
  * @author luckylau
  * @date 2018/1/4/004 13:59

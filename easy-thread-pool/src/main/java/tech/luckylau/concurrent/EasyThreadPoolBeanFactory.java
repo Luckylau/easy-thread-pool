@@ -35,12 +35,10 @@ public class EasyThreadPoolBeanFactory implements FactoryBean, InitializingBean 
     private EasyThreadPool easyThreadPool;
 
 
-
-
     @Override
     public void afterPropertiesSet() throws Exception {
         state((configLocation != null), " 'configLocation' can not be null");
-        if(configLocation != null){
+        if (configLocation != null) {
             configLocation = "/" + configLocation;
             threadPoolConfig = new ThreadPoolConfig();
             easyThreadPool = buildEasyThreadPool();
@@ -49,15 +47,15 @@ public class EasyThreadPoolBeanFactory implements FactoryBean, InitializingBean 
 
     }
 
-    private EasyThreadPool buildEasyThreadPool(){
+    private EasyThreadPool buildEasyThreadPool() {
         Document document = DomUtil.createDocument(configLocation);
 
         Element root = document.getDocumentElement();
         NodeParser rootParser = new NodeParser(root);
         List<Node> nodeList = rootParser.getChildNodes();
-        for(Node node: nodeList){
+        for (Node node : nodeList) {
             NodeParser nodeParser = new NodeParser(node);
-            if( "pool".equals(node.getNodeName()) ){
+            if ("pool".equals(node.getNodeName())) {
                 ThreadPoolInfo threadPoolInfo = new ThreadPoolInfo();
                 threadPoolInfo.setName(nodeParser.getAttributeValue("name"));
                 threadPoolInfo.setCoreSize(Integer.parseInt(nodeParser.getChildNodeValue("corePoolSize")));
@@ -66,13 +64,13 @@ public class EasyThreadPoolBeanFactory implements FactoryBean, InitializingBean 
                 threadPoolInfo.setQueueSize(Integer.parseInt(nodeParser.getChildNodeValue("workQueueSize")));
                 threadPoolInfo.setQueuePriority(Boolean.parseBoolean(nodeParser.getChildNodeValue("queuePriority")));
                 threadPoolInfos.add(threadPoolInfo);
-            }else if ( "threadstate".equals(node.getNodeName()) ) {
+            } else if ("threadstate".equals(node.getNodeName())) {
                 threadPoolConfig.setThreadStateSwitch("on".equalsIgnoreCase(nodeParser.getAttributeValue("switch")));
                 threadPoolConfig.setThreadStateInterval(Integer.parseInt(nodeParser.getAttributeValue("interval")));
-            }else if ( "threadpoolstate".equals(node.getNodeName()) ) {
+            } else if ("threadpoolstate".equals(node.getNodeName())) {
                 threadPoolConfig.setThreadPoolStateSwitch("on".equalsIgnoreCase(nodeParser.getAttributeValue("switch")));
                 threadPoolConfig.setThreadPoolStateInterval(Integer.parseInt(nodeParser.getAttributeValue("interval")));
-            }else if ( "threadstack".equals(node.getNodeName()) ){
+            } else if ("threadstack".equals(node.getNodeName())) {
                 threadPoolConfig.setThreadStackSwitch("on".equalsIgnoreCase(nodeParser.getAttributeValue("switch")));
                 threadPoolConfig.setThreadStackInterval(Integer.parseInt(nodeParser.getAttributeValue("interval")));
             }
@@ -86,7 +84,7 @@ public class EasyThreadPoolBeanFactory implements FactoryBean, InitializingBean 
 
     @Override
     public Object getObject() throws Exception {
-        if(this.easyThreadPool == null){
+        if (this.easyThreadPool == null) {
             afterPropertiesSet();
         }
         return this.easyThreadPool;

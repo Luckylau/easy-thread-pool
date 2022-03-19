@@ -13,12 +13,12 @@ public class ThreadPoolInfo {
 
     private long threadKeepAliveTime;
 
-    private boolean  queuePriority = false;
+    private boolean queuePriority = false;
 
     /**
      * queueSize -1 为 SynchronousQueue
      */
-    private int queueSize ;
+    private int queueSize;
 
     public String getName() {
         return name;

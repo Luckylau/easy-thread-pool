@@ -5,8 +5,6 @@ import org.slf4j.LoggerFactory;
 import tech.luckylau.concurrent.core.thread.ThreadStateInfo;
 import tech.luckylau.concurrent.core.utils.ThreadUtil;
 
-import java.util.Map;
-
 /**
  * @author luckylau
  * @date 2018/1/4/004 12:25
@@ -17,7 +15,7 @@ public class ThreadStateJob extends AbstractJob {
 
     private static final String DEFAULT_THREAD_GROUP_NAME_PRIFIX = "Easy-thread-Group-";
 
-    public ThreadStateJob(int interval){
+    public ThreadStateJob(int interval) {
         super.interval = interval;
     }
 
@@ -27,9 +25,9 @@ public class ThreadStateJob extends AbstractJob {
         int groupCapacity = root.activeGroupCount() * 2;
         ThreadGroup[] groupList = new ThreadGroup[groupCapacity];
         int groupNum = root.enumerate(groupList, true);
-        for(int i = 0; i < groupNum; i++){
+        for (int i = 0; i < groupNum; i++) {
             ThreadGroup threadGroup = groupList[i];
-            if(threadGroup.getName().contains(DEFAULT_THREAD_GROUP_NAME_PRIFIX)){
+            if (threadGroup.getName().contains(DEFAULT_THREAD_GROUP_NAME_PRIFIX)) {
                 ThreadStateInfo stateInfo = ThreadUtil.stateThreadGroup(threadGroup);
                 logger.info("ThreadGroup:{}, New:{},  Runnable:{}, Blocked:{}, Waiting:{}, TimedWaiting:{}, Terminated:{}",
                         threadGroup.getName(), stateInfo.newCount, stateInfo.runnableCount, stateInfo.blockedCount,

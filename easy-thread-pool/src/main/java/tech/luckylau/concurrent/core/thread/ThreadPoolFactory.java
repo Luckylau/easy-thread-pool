@@ -15,7 +15,7 @@ public class ThreadPoolFactory implements ThreadFactory {
     private ThreadGroup threadGroup;
     private String threadPoolName;
 
-    public ThreadPoolFactory(String threadPoolName){
+    public ThreadPoolFactory(String threadPoolName) {
         this.threadPoolName = threadPoolName;
         threadGroup = new ThreadGroup(DEFAULT_THREAD_GROUP_NAME_PRIFIX + threadPoolName);
     }
@@ -23,10 +23,10 @@ public class ThreadPoolFactory implements ThreadFactory {
     @Override
     public Thread newThread(Runnable r) {
         Thread t = new Thread(threadGroup, r, DEFAULT_THREAD_POOL_NAME_PRIFIX + threadPoolName + "-" + threadNumber.getAndIncrement(), 0);
-        if(t.isDaemon()) {
+        if (t.isDaemon()) {
             t.setDaemon(false);
         }
-        if(t.getPriority() != Thread.NORM_PRIORITY) {
+        if (t.getPriority() != Thread.NORM_PRIORITY) {
             t.setPriority(Thread.NORM_PRIORITY);
         }
         return t;

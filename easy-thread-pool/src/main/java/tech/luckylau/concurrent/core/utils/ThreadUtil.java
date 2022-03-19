@@ -8,7 +8,7 @@ import tech.luckylau.concurrent.core.thread.ThreadStateInfo;
  */
 public class ThreadUtil {
 
-    public static ThreadGroup getRootThreadGroup(){
+    public static ThreadGroup getRootThreadGroup() {
         ThreadGroup threadGroup = Thread.currentThread().getThreadGroup();
         while (null != threadGroup.getParent()) {
             threadGroup = threadGroup.getParent();
@@ -16,8 +16,8 @@ public class ThreadUtil {
         return threadGroup;
     }
 
-    public static ThreadStateInfo stateThreadGroup(ThreadGroup threadGroup){
-        if( null == threadGroup){
+    public static ThreadStateInfo stateThreadGroup(ThreadGroup threadGroup) {
+        if (null == threadGroup) {
             throw new IllegalArgumentException("threadGroup is null");
         }
 
@@ -26,7 +26,7 @@ public class ThreadUtil {
         int threadNum = threadGroup.enumerate(threadlist);
 
         ThreadStateInfo threadStateInfo = new ThreadStateInfo();
-        for(int j = 0; j < threadNum; j++) {
+        for (int j = 0; j < threadNum; j++) {
             Thread thread = threadlist[j];
             switch (thread.getState()) {
                 case NEW:

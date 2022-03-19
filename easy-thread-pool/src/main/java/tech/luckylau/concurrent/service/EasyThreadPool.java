@@ -14,106 +14,119 @@ import java.util.concurrent.TimeUnit;
  */
 public interface EasyThreadPool {
 
-    public void init();
+    void init();
 
-    public void close();
+    void close();
+
     /**
      * 提交一个不需要返回值的异步任务给默认的线程池执行。
+     *
      * @param task
      * @return
      */
-    public Future<?> submit(Runnable task);
+    Future<?> submit(Runnable task);
 
     /**
      * 提交一个不需要返回值的异步任务给指定的线程池执行。
+     *
      * @param task
      * @param threadPoolName
      * @return
      */
-    public Future<?> submit(Runnable task, String threadPoolName);
+    Future<?> submit(Runnable task, String threadPoolName);
 
     /**
      * 提交一个不需要返回值的异步任务给默认线程池执行,并指定无法提交时的处理方式。
+     *
      * @param task
      * @param failHandler
      * @return
      */
-    public Future<?> submit(Runnable task, Failhandler<Runnable> failHandler);
+    Future<?> submit(Runnable task, Failhandler<Runnable> failHandler);
 
 
     /**
      * 提交一个不需要返回值的异步任务给指定的线程池执行,并指定无法提交时的处理方式。
+     *
      * @param task
      * @param threadPoolName
      * @param failHandler
      * @return
      */
-    public Future<?> submit(Runnable task, String threadPoolName, Failhandler<Runnable> failHandler);
+    Future<?> submit(Runnable task, String threadPoolName, Failhandler<Runnable> failHandler);
 
     /**
      * 提交一个需要返回值的异步任务给默认的线程池执行。
+     *
      * @param task
      * @param <T>
      * @return
      */
-    public <T> Future<T> submit(Callable<T> task);
+    <T> Future<T> submit(Callable<T> task);
 
     /**
      * 提交一个需要返回值的异步任务给指定的线程池执行。
+     *
      * @param task
      * @param threadPoolName
      * @param <T>
      * @return
      */
-    public <T> Future<T> submit(Callable<T> task, String threadPoolName);
+    <T> Future<T> submit(Callable<T> task, String threadPoolName);
 
 
     /**
      * 提交一个需要返回值的异步任务给默认线程池执行,并指定无法提交时的处理方式。
+     *
      * @param task
      * @param failHandler
      * @return
      */
-    public <T> Future<T> submit(Callable<T> task, Failhandler<Callable<T>> failHandler);
+    <T> Future<T> submit(Callable<T> task, Failhandler<Callable<T>> failHandler);
 
     /**
      * 提交一个需要返回值的异步任务给指定的线程池执行,并指定无法提交时的处理方式。
+     *
      * @param task
      * @param threadPoolName
      * @param failHandler
      * @return
      */
-    public <T> Future<T> submit(Callable<T> task, String threadPoolName, Failhandler<Callable<T>> failHandler);
+    <T> Future<T> submit(Callable<T> task, String threadPoolName, Failhandler<Callable<T>> failHandler);
 
     /**
      * 在线程池"default"执行多个需要返回值的异步任务
+     *
      * @param tasks
      * @param <T>
      * @return
      */
-    public <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks);
+    <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks);
 
     /**
      * 在线程池"default"执行多个需要返回值的异步任务，并设置超时时间。
+     *
      * @param tasks
      * @param timeout
      * @param timeoutUnit
      * @param <T>
      * @return
      */
-    public <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks, long timeout, TimeUnit timeoutUnit);
+    <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks, long timeout, TimeUnit timeoutUnit);
 
     /**
      * 在指定的线程池执行多个需要返回值的异步任务
+     *
      * @param tasks
      * @param threadpoolName
      * @param <T>
      * @return
      */
-    public <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks,String threadpoolName);
+    <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks, String threadpoolName);
 
     /**
      * 在指定的线程池执行多个需要返回值的异步任务，并设置超时时间。
+     *
      * @param tasks
      * @param timeout
      * @param timeoutUnit
@@ -121,7 +134,7 @@ public interface EasyThreadPool {
      * @param <T>
      * @return
      */
-    public <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks, long timeout, TimeUnit timeoutUnit, String threadpoolName);
+    <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks, long timeout, TimeUnit timeoutUnit, String threadpoolName);
 
 
 }

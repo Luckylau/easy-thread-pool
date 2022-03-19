@@ -10,7 +10,7 @@ public class ThreadPoolStatus {
 
     public final static int INITIALIYION_SUCESSFUL = 1;
 
-    public final static int  INITIALIYION_FAILED = 2;
+    public final static int INITIALIYION_FAILED = 2;
 
     public final static int DESTROYED = 3;
 }

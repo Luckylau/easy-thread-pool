@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * 处理xml文件
+ *
  * @author luckylau
  * @date 2017/12/22/022 14:28
  */
@@ -11,21 +12,24 @@ public class ThreadPoolConfig {
 
     private List<ThreadPoolInfo> threadPoolInfo;
 
-    /**是否开启线程池状态收集
+    /**
+     * 是否开启线程池状态收集
      * 时间间隔单位为秒
-     * */
+     */
     private boolean threadPoolStateSwitch = false;
     private int threadPoolStateInterval = 60;
 
-    /**是否开启线程状态收集
+    /**
+     * 是否开启线程状态收集
      * 时间间隔单位为秒
-     * */
+     */
     private boolean threadStateSwitch = false;
     private int threadStateInterval = 60;
 
-    /**是否开启线程堆栈收集
+    /**
+     * 是否开启线程堆栈收集
      * 时间间隔单位为秒
-     * */
+     */
     private boolean threadStackSwitch = false;
     private int threadStackInterval = 60;
 
