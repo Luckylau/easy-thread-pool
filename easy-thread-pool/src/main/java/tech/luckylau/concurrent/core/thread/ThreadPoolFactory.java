@@ -9,20 +9,20 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class ThreadPoolFactory implements ThreadFactory {
 
-    private static final AtomicInteger threadNumber = new AtomicInteger(1);
-    private static final String DEFAULT_THREAD_POOL_NAME_PRIFIX = "Easy-thread-Pool-";
-    private static final String DEFAULT_THREAD_GROUP_NAME_PRIFIX = "Easy-thread-Group-";
+    private static final AtomicInteger THREAD_NUMBER = new AtomicInteger(1);
+    private static final String DEFAULT_THREAD_POOL_NAME_PREFIX = "Easy-thread-Pool-";
+    private static final String DEFAULT_THREAD_GROUP_NAME_PREFIX = "Easy-thread-Group-";
     private ThreadGroup threadGroup;
     private String threadPoolName;
 
     public ThreadPoolFactory(String threadPoolName) {
         this.threadPoolName = threadPoolName;
-        threadGroup = new ThreadGroup(DEFAULT_THREAD_GROUP_NAME_PRIFIX + threadPoolName);
+        threadGroup = new ThreadGroup(DEFAULT_THREAD_GROUP_NAME_PREFIX + threadPoolName);
     }
 
     @Override
     public Thread newThread(Runnable r) {
-        Thread t = new Thread(threadGroup, r, DEFAULT_THREAD_POOL_NAME_PRIFIX + threadPoolName + "-" + threadNumber.getAndIncrement(), 0);
+        Thread t = new Thread(threadGroup, r, DEFAULT_THREAD_POOL_NAME_PREFIX + threadPoolName + "-" + THREAD_NUMBER.getAndIncrement(), 0);
         if (t.isDaemon()) {
             t.setDaemon(false);
         }

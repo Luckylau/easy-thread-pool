@@ -57,9 +57,9 @@ public class EasyThreadPoolImpl implements EasyThreadPool {
             startThreadPoolStateJob();
             startThreadStackJob();
             startThreadStateJob();
-            status = ThreadPoolStatus.INITIALIYION_SUCESSFUL;
+            status = ThreadPoolStatus.INITIALISATION_SUCCESSFULLY;
         } catch (Exception e) {
-            status = ThreadPoolStatus.INITIALIYION_FAILED;
+            status = ThreadPoolStatus.INITIALIZATION_FAILED;
             logger.error("initialization failed ", e.getMessage());
         } finally {
             Runtime.getRuntime().addShutdownHook(new Thread() {

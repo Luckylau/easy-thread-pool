@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class ThreadPoolStateJob extends AbstractJob {
     private final static Logger logger = LoggerFactory.getLogger(ThreadPoolStateJob.class);
 
-    private Map<String, ExecutorService> multiThreadPool;
+    private final Map<String, ExecutorService> multiThreadPool;
 
     public ThreadPoolStateJob(Map<String, ExecutorService> multiThreadPool, int interval) {
         this.multiThreadPool = multiThreadPool;

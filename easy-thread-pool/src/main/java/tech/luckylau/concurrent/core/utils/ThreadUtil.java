@@ -22,12 +22,12 @@ public class ThreadUtil {
         }
 
         int threadCapacity = threadGroup.activeCount() * 2;
-        Thread[] threadlist = new Thread[threadCapacity];
-        int threadNum = threadGroup.enumerate(threadlist);
+        Thread[] threadList = new Thread[threadCapacity];
+        int threadNum = threadGroup.enumerate(threadList);
 
         ThreadStateInfo threadStateInfo = new ThreadStateInfo();
         for (int j = 0; j < threadNum; j++) {
-            Thread thread = threadlist[j];
+            Thread thread = threadList[j];
             switch (thread.getState()) {
                 case NEW:
                     threadStateInfo.newCount += 1;

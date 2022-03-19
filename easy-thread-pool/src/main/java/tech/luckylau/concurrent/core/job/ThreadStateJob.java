@@ -13,7 +13,7 @@ public class ThreadStateJob extends AbstractJob {
 
     private final static Logger logger = LoggerFactory.getLogger(ThreadStateJob.class);
 
-    private static final String DEFAULT_THREAD_GROUP_NAME_PRIFIX = "Easy-thread-Group-";
+    private static final String DEFAULT_THREAD_GROUP_NAME_PREFIX = "Easy-thread-Group-";
 
     public ThreadStateJob(int interval) {
         super.interval = interval;
@@ -27,7 +27,7 @@ public class ThreadStateJob extends AbstractJob {
         int groupNum = root.enumerate(groupList, true);
         for (int i = 0; i < groupNum; i++) {
             ThreadGroup threadGroup = groupList[i];
-            if (threadGroup.getName().contains(DEFAULT_THREAD_GROUP_NAME_PRIFIX)) {
+            if (threadGroup.getName().contains(DEFAULT_THREAD_GROUP_NAME_PREFIX)) {
                 ThreadStateInfo stateInfo = ThreadUtil.stateThreadGroup(threadGroup);
                 logger.info("ThreadGroup:{}, New:{},  Runnable:{}, Blocked:{}, Waiting:{}, TimedWaiting:{}, Terminated:{}",
                         threadGroup.getName(), stateInfo.newCount, stateInfo.runnableCount, stateInfo.blockedCount,
