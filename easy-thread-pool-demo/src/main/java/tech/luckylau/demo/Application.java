@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ImportResource;
  */
 
 
-@ImportResource(value = {"classpath*:META-INF/*/applicationContext.xml"})
+@ImportResource(value = {"classpath*:META-INF/applicationContext.xml"})
 @SpringBootApplication
 public class Application {
     public static void main(String[] args) {
