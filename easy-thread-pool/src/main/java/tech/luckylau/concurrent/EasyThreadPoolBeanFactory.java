@@ -21,11 +21,11 @@ import static org.springframework.util.Assert.state;
  * @author luckylau
  * @date 2017/12/22/022 15:41
  */
-public class EasyThreadPoolBeanFactory implements FactoryBean, InitializingBean {
+public class EasyThreadPoolBeanFactory implements FactoryBean<EasyThreadPool>, InitializingBean {
 
     private ThreadPoolConfig threadPoolConfig;
 
-    private List<ThreadPoolInfo> threadPoolInfos = new ArrayList<>();
+    private final List<ThreadPoolInfo> threadPoolInfos = new ArrayList<>();
 
     /**
      * 配置文件的位置
@@ -38,13 +38,9 @@ public class EasyThreadPoolBeanFactory implements FactoryBean, InitializingBean 
     @Override
     public void afterPropertiesSet() throws Exception {
         state((configLocation != null), " 'configLocation' can not be null");
-        if (configLocation != null) {
-            configLocation = "/" + configLocation;
-            threadPoolConfig = new ThreadPoolConfig();
-            easyThreadPool = buildEasyThreadPool();
-        }
-
-
+        configLocation = "/" + configLocation;
+        threadPoolConfig = new ThreadPoolConfig();
+        easyThreadPool = buildEasyThreadPool();
     }
 
     private EasyThreadPool buildEasyThreadPool() {
@@ -83,7 +79,7 @@ public class EasyThreadPoolBeanFactory implements FactoryBean, InitializingBean 
     }
 
     @Override
-    public Object getObject() throws Exception {
+    public EasyThreadPool getObject() throws Exception {
         if (this.easyThreadPool == null) {
             afterPropertiesSet();
         }
